@@ -1,5 +1,6 @@
+import io
 import sys
-from ui import Ui_MainWindow
+from PyQt6 import uic
 from random import randint
 from PyQt6.QtGui import QColor, QPainter
 from PyQt6.QtWidgets import QApplication
@@ -42,10 +43,11 @@ template = """<?xml version="1.0" encoding="UTF-8"?>
 </ui>
 """
 
-class MyWidget(QMainWindow, Ui_MainWindow):
+class MyWidget(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.setupUi(self)
+        f = io.StringIO(template)
+        uic.loadUi(f, self)
         self.do_paint = False
         self.btn_create_circle.clicked.connect(self.create)
 
@@ -57,7 +59,8 @@ class MyWidget(QMainWindow, Ui_MainWindow):
             qp.end()
 
     def draw(self, qp):
-        qp.setBrush(QColor(randint(0, 255), randint(0, 255), randint(0, 255)))
+        # qp.setBrush(QColor(randint(0, 255), randint(0, 255), randint(0, 255)))
+        qp.setBrush(QColor('yellow'))
         r = randint(0, 250)
         qp.drawEllipse(randint(0, 399 - r), randint(0, 561 - r), r, r)
         self.do_paint = False
